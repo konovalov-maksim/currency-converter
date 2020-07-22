@@ -1,4 +1,4 @@
-package com.konovalov.converter.entities;
+package com.konovalov.converter.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
