@@ -1,6 +1,9 @@
 package com.konovalov.converter;
 
 import okhttp3.OkHttpClient;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.SpringApplication;
@@ -40,5 +43,16 @@ public class ConverterApplication {
                 .writeTimeout(writeTimeout, TimeUnit.SECONDS)
                 .connectTimeout(connectionTimeout, TimeUnit.SECONDS)
                 .build();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setFieldMatchingEnabled(true)
+                .setSkipNullEnabled(true)
+                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
+        return mapper;
     }
 }
