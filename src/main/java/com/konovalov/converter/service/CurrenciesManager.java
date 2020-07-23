@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CurrencyManager {
+public class CurrenciesManager {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -33,7 +33,7 @@ public class CurrencyManager {
     private String currenciesRequestUrl;
 
     @Autowired
-    public CurrencyManager(
+    public CurrenciesManager(
             OkHttpClient client,
             CurrencyRepository currencyRepo,
             ModelMapper mapper) {
@@ -78,6 +78,9 @@ public class CurrencyManager {
         } catch (JAXBException e) {
             e.printStackTrace();
             logger.error("Ошибка парсинга списка валют", e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Ошибка обработки ответа по запросу на получение списка валют", e);
         }
     }
 

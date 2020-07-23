@@ -1,6 +1,6 @@
 package com.konovalov.converter.controller;
 
-import com.konovalov.converter.service.CurrencyManager;
+import com.konovalov.converter.service.CurrenciesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ConverterController {
 
     @Autowired
-    private CurrencyManager currencyManager;
+    private CurrenciesManager currenciesManager;
 
     @GetMapping("/converter")
     public String showConverter() {
-        currencyManager.updateCurrencies();
+        currenciesManager.updateCurrencies();
         return "converter";
     }
 }
