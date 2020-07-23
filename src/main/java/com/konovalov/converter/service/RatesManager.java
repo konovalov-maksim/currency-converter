@@ -22,6 +22,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -71,19 +72,20 @@ public class RatesManager {
         }
     };
 
+
     private void processResponse(Response response) {
         try {
             InputStream responseXml = response.body().byteStream();
             RatesListDto ratesListDto = extractRatesList(responseXml);
-            List<Rate> rates = convertToEntities(ratesListDto);
-            logger.info("Получено курсов валют: " + rates.size());
+//            List<Rate> rates = convertToEntities(ratesListDto);
+            logger.info("Получено курсов валют: " + ratesListDto.getRatesList().size());
             //TODO добавить курс рубля
-            for (Rate rate : rates) {
+            for (RateDto rateDto : ratesListDto.getRatesList()) {
                 try {
-                    saveRate(rate);
+                    saveRate(rateDto, ratesListDto.getDate());
                 } catch (Exception e) {
                     e.printStackTrace();
-                    logger.error("Ошибка сохранения: курс валюты " + rate + " уже был сохранен ранее", e);
+                    logger.error("Ошибка сохранения: курс валюты " + rateDto + " уже был сохранен ранее", e);
                 }
             }
             logger.info("Обновление курсов валют завершено");
@@ -110,9 +112,14 @@ public class RatesManager {
         return rates;
     }
 
-
-    private void saveRate(Rate rate) {
+    @Transactional
+    void saveRate(RateDto rateDto, Date rateDate) {
+        Rate rate = mapper.map(rateDto, Rate.class);
+        rate.setDate(rateDate);
+        rate.setCurrency(currencyRepository.getOne(rateDto.getCurrencyId()));
         rateRepo.save(rate);
     }
+
+
 
 }
