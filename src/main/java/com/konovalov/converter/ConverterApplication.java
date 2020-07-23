@@ -52,7 +52,7 @@ public class ConverterApplication {
                 .setMatchingStrategy(MatchingStrategies.STRICT)
                 .setFieldMatchingEnabled(true)
                 .setSkipNullEnabled(true)
-                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
+                .setMethodAccessLevel(Configuration.AccessLevel.PUBLIC);
         return mapper;
     }
 }
