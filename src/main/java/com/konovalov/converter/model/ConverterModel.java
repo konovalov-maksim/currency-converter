@@ -19,8 +19,7 @@ public class ConverterModel {
     @NotNull(message = "Валюта не выбрана")
     private String currencyToId;
 
-    @Min(value = 0, message = "Допустимы только положительные числа")
-    @Max(value = Long.MAX_VALUE, message = "Указанно слишком большое значение")
+    @Digits(integer = 12, fraction = 2, message = "Недопустимое значение")
     private BigDecimal inputValue;
 
     private BigDecimal outputValue;
