@@ -11,4 +11,6 @@ import java.util.Date;
 public interface RateRepository extends CrudRepository<Rate, Long> {
     @Query("select max(r.date) from Rate r")
     Date findLastRatesDate();
+
+    Rate findByCurrencyIdAndDate(String currencyId, Date rateDate);
 }

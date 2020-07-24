@@ -23,6 +23,9 @@ public class Rate {
     @Column(name = "date")
     private Date date;
 
+    @Column(name = "currency_id", insertable = false, updatable = false)
+    private String currencyId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
@@ -57,6 +60,14 @@ public class Rate {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(String currencyId) {
+        this.currencyId = currencyId;
     }
 
     public Currency getCurrency() {

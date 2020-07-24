@@ -1,8 +1,11 @@
 package com.konovalov.converter.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
+
+import static java.math.RoundingMode.HALF_DOWN;
 
 @Entity
 @Table(name = "conversion")
@@ -13,8 +16,11 @@ public class Conversion {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "date", insertable = false)
+    @Column(name = "date", insertable = false, updatable = false)
     private Date date;
+
+    @Column(name = "input_value")
+    private BigDecimal inputValue;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rate_from_id", referencedColumnName = "id")
@@ -27,6 +33,26 @@ public class Conversion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Conversion() {
+    }
+
+    public Conversion(BigDecimal inputValue, Rate rateFrom, Rate rateTo, User user) {
+        this.inputValue = inputValue;
+        this.rateFrom = rateFrom;
+        this.rateTo = rateTo;
+        this.user = user;
+    }
+
+    public BigDecimal calculateOutputValue() {
+        BigDecimal inputCurrencyRelationToRouble = rateFrom.getValue()
+                .divide(new BigDecimal(rateFrom.getNominal()), HALF_DOWN);
+        BigDecimal outputCurrencyRelationToRouble = rateTo.getValue()
+                .divide(new BigDecimal(rateTo.getNominal()), HALF_DOWN);
+        return inputValue
+                .multiply(inputCurrencyRelationToRouble)
+                .divide(outputCurrencyRelationToRouble, HALF_DOWN);
+    }
 
     public Long getId() {
         return id;
@@ -42,6 +68,14 @@ public class Conversion {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public BigDecimal getInputValue() {
+        return inputValue;
+    }
+
+    public void setInputValue(BigDecimal inputValue) {
+        this.inputValue = inputValue;
     }
 
     public Rate getRateFrom() {
@@ -71,8 +105,10 @@ public class Conversion {
     @Override
     public String toString() {
         return "Conversion{" +
-                "id=" + id +
-                ", date=" + date +
+                "date=" + date +
+                ", inputValue=" + inputValue +
+                ", rateFrom=" + rateFrom +
+                ", rateTo=" + rateTo +
                 '}';
     }
 
@@ -82,6 +118,7 @@ public class Conversion {
         if (o == null || getClass() != o.getClass()) return false;
         Conversion that = (Conversion) o;
         return Objects.equals(date, that.date) &&
+                Objects.equals(inputValue, that.inputValue) &&
                 Objects.equals(rateFrom, that.rateFrom) &&
                 Objects.equals(rateTo, that.rateTo) &&
                 Objects.equals(user, that.user);
@@ -89,6 +126,6 @@ public class Conversion {
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, rateFrom, rateTo, user);
+        return Objects.hash(date, inputValue, rateFrom, rateTo, user);
     }
 }

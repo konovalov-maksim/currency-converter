@@ -2,6 +2,7 @@ package com.konovalov.converter.controller;
 
 import com.konovalov.converter.entity.Currency;
 import com.konovalov.converter.model.ConverterModel;
+import com.konovalov.converter.service.ConverterService;
 import com.konovalov.converter.service.CurrenciesManager;
 import com.konovalov.converter.service.RatesManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,9 @@ public class ConverterController {
 
     @Autowired
     private RatesManager ratesManager;
+
+    @Autowired
+    private ConverterService converterService;
 
     @GetMapping("/converter")
     public String showConverter(@ModelAttribute ConverterModel converterModel) {
@@ -46,17 +51,13 @@ public class ConverterController {
         converterModel.setCurrenciesFrom(currencies);
         converterModel.setCurrenciesTo(currencies);
         if (bindingResult.hasErrors()) return "converter";
-        //TODO тут реализуем конвертацию
+        BigDecimal outputValue = converterService.convert(
+                converterModel.getInputValue(),
+                converterModel.getCurrencyFromId(),
+                converterModel.getCurrencyToId()
+        );
+        converterModel.setOutputValue(outputValue);
         return "converter";
-    }
-
-    private Map<String, Currency> getCurrencies() {
-        return currenciesManager.findCurrenciesWithRelevantRate().stream()
-                .collect(Collectors.toMap(
-                        Currency::getId,
-                        currency -> currency,
-                        (v1, v2) -> v1,
-                        LinkedHashMap::new));
     }
 
 }
