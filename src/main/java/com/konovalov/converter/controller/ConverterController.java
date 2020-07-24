@@ -2,7 +2,7 @@ package com.konovalov.converter.controller;
 
 import com.konovalov.converter.entity.Currency;
 import com.konovalov.converter.model.ConverterModel;
-import com.konovalov.converter.service.ConverterService;
+import com.konovalov.converter.service.ConversionService;
 import com.konovalov.converter.service.CurrenciesManager;
 import com.konovalov.converter.service.RatesManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,7 @@ public class ConverterController {
     @Value("${default.currencyToId}")
     private String defaultCurrencyToId;
 
+    //TODO перенести в конструктор
     @Autowired
     private CurrenciesManager currenciesManager;
 
@@ -33,7 +34,7 @@ public class ConverterController {
     private RatesManager ratesManager;
 
     @Autowired
-    private ConverterService converterService;
+    private ConversionService conversionService;
 
     @GetMapping("/converter")
     public String showConverter(@ModelAttribute ConverterModel converterModel) {
@@ -59,7 +60,7 @@ public class ConverterController {
         converterModel.setCurrenciesFrom(currencies);
         converterModel.setCurrenciesTo(currencies);
         if (bindingResult.hasErrors()) return "converter";
-        BigDecimal outputValue = converterService.convert(
+        BigDecimal outputValue = conversionService.convert(
                 converterModel.getInputValue(),
                 converterModel.getCurrencyFromId(),
                 converterModel.getCurrencyToId()

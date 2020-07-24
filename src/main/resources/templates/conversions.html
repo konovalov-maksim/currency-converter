@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="/style.css">
+    <title>История конвертаций</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <td>Исходная валюта</td>
+        <td>Целевая валюта</td>
+        <td>Исходная сумма</td>
+        <td>Получаемая сумма</td>
+        <td>Дата</td>
+    </tr>
+    <tr th:each="conversion : ${conversionsList}">
+        <td th:text="${conversion.rateFrom.currency.toString()}"/>
+        <td th:text="${conversion.rateTo.currency.toString()}"/>
+        <td th:text="${conversion.inputValue}"/>
+        <td th:text="${conversion.calculateOutputValue()}"/>
+        <td th:text="${conversion.date}"/>
+    </tr>
+</table>
+</body>
+</html>

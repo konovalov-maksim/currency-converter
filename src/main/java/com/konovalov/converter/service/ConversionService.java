@@ -13,10 +13,12 @@ import org.thymeleaf.util.DateUtils;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
-public class ConverterService {
+public class ConversionService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -24,7 +26,7 @@ public class ConverterService {
     private final RateRepository rateRepository;
 
     @Autowired
-    public ConverterService(ConversionRepository conversionRepo, RateRepository rateRepository) {
+    public ConversionService(ConversionRepository conversionRepo, RateRepository rateRepository) {
         this.conversionRepo = conversionRepo;
         this.rateRepository = rateRepository;
     }
@@ -49,6 +51,10 @@ public class ConverterService {
             return new BigDecimal(0);
         }
     }
+
+//    public List<Conversion> findUserConversions(Long userId) {
+//        return conversionRepo.findAll();
+//    }
 
 
 }

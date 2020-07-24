@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EntityScan("com.konovalov.converter.entity")
-@PropertySource("classpath:config.properties")
+@PropertySource(value = "classpath:config.properties", encoding = "UTF-8")
 @EnableJpaRepositories("com.konovalov.converter.repository")
 public class ConverterApplication {
 
