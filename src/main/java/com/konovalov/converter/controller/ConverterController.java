@@ -17,8 +17,10 @@ public class ConverterController {
 
     @GetMapping("/converter")
     public String showConverter() {
-        //currenciesManager.updateCurrencies();
-        ratesManager.updateRates();
+        if (ratesManager.areRatesOutdated()) {
+            currenciesManager.updateCurrencies();
+            ratesManager.updateRates();
+        }
         return "converter";
     }
 }

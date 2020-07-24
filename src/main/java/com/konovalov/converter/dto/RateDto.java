@@ -43,4 +43,9 @@ public class RateDto {
     public void setValue(BigDecimal value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return currencyId + " : " + value;
+    }
 }

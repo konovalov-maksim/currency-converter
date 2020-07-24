@@ -4,7 +4,6 @@ import com.konovalov.converter.dto.CurrencyItemsList;
 import com.konovalov.converter.entity.Currency;
 import com.konovalov.converter.repository.CurrencyRepository;
 import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,21 +45,14 @@ public class CurrenciesManager {
         Request request = new Request.Builder()
                 .url(currenciesRequestUrl)
                 .build();
-        client.newCall(request).enqueue(callback);
-    }
-
-    private final Callback callback = new Callback() {
-        @Override
-        public void onResponse(@NotNull Call call, @NotNull Response response) {
+        try {
+            Response response = client.newCall(request).execute();
             logger.info("Запрос на список валют: получен ответ " + response.code());
             processResponse(response);
-        }
-
-        @Override
-        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+        } catch (IOException e) {
             logger.error("Неудачная попытка получения списка валют", e);
         }
-    };
+    }
 
     private void processResponse(Response response) {
         try {
@@ -70,16 +62,13 @@ public class CurrenciesManager {
                 try {
                     currencyRepo.save(currency);
                 } catch (DataAccessException e) {
-                    e.printStackTrace();
                     logger.error("Ошибка сохранения данных валюты " + currency, e);
                 }
             }
             logger.info("Обновление списка валют завершено");
         } catch (JAXBException e) {
-            e.printStackTrace();
             logger.error("Ошибка парсинга списка валют", e);
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("Ошибка обработки ответа по запросу на получение списка валют", e);
         }
     }
