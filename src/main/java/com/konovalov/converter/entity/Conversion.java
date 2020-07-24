@@ -46,12 +46,12 @@ public class Conversion {
 
     public BigDecimal calculateOutputValue() {
         BigDecimal inputCurrencyRelationToRouble = rateFrom.getValue()
-                .divide(new BigDecimal(rateFrom.getNominal()), HALF_DOWN);
+                .divide(new BigDecimal(rateFrom.getNominal()), 4, HALF_DOWN);
         BigDecimal outputCurrencyRelationToRouble = rateTo.getValue()
-                .divide(new BigDecimal(rateTo.getNominal()), HALF_DOWN);
+                .divide(new BigDecimal(rateTo.getNominal()), 4, HALF_DOWN);
         return inputValue
                 .multiply(inputCurrencyRelationToRouble)
-                .divide(outputCurrencyRelationToRouble, HALF_DOWN);
+                .divide(outputCurrencyRelationToRouble, 4, HALF_DOWN);
     }
 
     public Long getId() {

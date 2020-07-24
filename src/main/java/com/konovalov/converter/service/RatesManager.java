@@ -20,6 +20,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -33,8 +34,13 @@ public class RatesManager {
     private final CurrencyRepository currencyRepository;
     private final ModelMapper mapper;
 
+    private final Date today = DateUtils.createToday().getTime();
+
     @Value("${http.url.rates}")
     private String ratesRequestUrl;
+
+    @Value("${data.rubId}")
+    private String roubleCurrencyId;
 
     @Autowired
     public RatesManager(
@@ -50,7 +56,6 @@ public class RatesManager {
 
     public boolean areRatesOutdated() {
         Date lastStoredRatesDate = rateRepo.findLastRatesDate();
-        Date today = DateUtils.createToday().getTime();
         return lastStoredRatesDate == null || lastStoredRatesDate.before(today);
     }
 
@@ -78,7 +83,8 @@ public class RatesManager {
             InputStream responseXml = response.body().byteStream();
             RatesListDto ratesListDto = extractRatesList(responseXml);
             logger.info("Получено курсов валют: " + ratesListDto.getRatesList().size());
-            //TODO добавить курс рубля
+            //TODO сделать рефакторинг
+            if (ratesListDto.getRatesList().isEmpty()) return;
             for (RateDto rateDto : ratesListDto.getRatesList()) {
                 try {
                     saveRate(rateDto, ratesListDto.getDate());
@@ -86,6 +92,7 @@ public class RatesManager {
                     logger.error("Ошибка обновления курса валюты " + rateDto, e);
                 }
             }
+            addRoubleRate();
             logger.info("Обновление курсов валют завершено");
         } catch (Exception e) {
             logger.error("Ошибка обработки ответа по запросу на получение курсов валют", e);
@@ -106,6 +113,18 @@ public class RatesManager {
         rateRepo.save(rate);
     }
 
-
+    //В XML, получаемом от сервиса ЦБР отсутствуют данные по курсу рубля
+    //Для того, чтобы в конвертер включить рубль, добавляем его курс вручную
+    //Поскольку курсы остальных валют заданы по отношению к рублю, можно быть уверенным,
+    //что для рубля номинал и курс всегда будут равны 1
+    @Transactional
+    private void addRoubleRate() {
+        Rate roubleRate = new Rate();
+        roubleRate.setCurrency(currencyRepository.getOne(roubleCurrencyId));
+        roubleRate.setDate(today);
+        roubleRate.setNominal(1);
+        roubleRate.setValue(new BigDecimal(1));
+        rateRepo.save(roubleRate);
+    }
 
 }

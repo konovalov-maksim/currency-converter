@@ -6,6 +6,7 @@ import com.konovalov.converter.service.ConverterService;
 import com.konovalov.converter.service.CurrenciesManager;
 import com.konovalov.converter.service.RatesManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class ConverterController {
+
+    @Value("${default.currencyFromId}")
+    private String defaultCurrencyFromId;
+
+    @Value("${default.currencyToId}")
+    private String defaultCurrencyToId;
 
     @Autowired
     private CurrenciesManager currenciesManager;
@@ -40,6 +44,10 @@ public class ConverterController {
         List<Currency> currencies = currenciesManager.findCurrenciesWithRelevantRate();
         converterModel.setCurrenciesFrom(currencies);
         converterModel.setCurrenciesTo(currencies);
+        if (converterModel.getCurrencyFromId() == null)
+            converterModel.setCurrencyFromId(defaultCurrencyFromId);
+        if (converterModel.getCurrencyToId() == null)
+            converterModel.setCurrencyToId(defaultCurrencyToId);
         return "converter";
     }
 

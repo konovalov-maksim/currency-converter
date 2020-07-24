@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface CurrencyRepository extends JpaRepository<Currency, String> {
-    @Query("select r.currency from Rate r where r.date = :rateDate")
+    @Query("select r.currency from Rate r where r.date = :rateDate order by r.currency.charCode")
     List<Currency> findCurrenciesForDate(@Param("rateDate") Date rateDate);
 }

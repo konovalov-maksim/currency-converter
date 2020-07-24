@@ -1,5 +1,7 @@
 package com.konovalov.converter.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "currency")
-public class Currency {
+public class Currency implements Comparable<Currency> {
 
     @Id
     @Column(name = "id")
@@ -22,6 +24,16 @@ public class Currency {
 
     @Column(name = "char_code")
     private String charCode;
+
+    public Currency() {
+    }
+
+    public Currency(String id, String name, Integer numCode, String charCode) {
+        this.id = id;
+        this.name = name;
+        this.numCode = numCode;
+        this.charCode = charCode;
+    }
 
     public String getId() {
         return id;
@@ -73,5 +85,13 @@ public class Currency {
     @Override
     public int hashCode() {
         return Objects.hash(name, numCode, charCode);
+    }
+
+    @Override
+    public int compareTo(@NotNull Currency o) {
+        int result = this.charCode.compareTo(o.charCode);
+        if (result == 0) result = this.name.compareTo(o.name);
+        if (result == 0) result = this.numCode.compareTo(o.numCode);
+        return result;
     }
 }
