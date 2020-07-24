@@ -22,6 +22,8 @@
     </select>
     <br>
     <input type="text" th:field="*{inputValue}"/>
+    <span  th:if="${#fields.hasErrors('inputValue')}" th:errors="*{inputValue}"/>
+    <br>
     <input type="text" th:field="*{outputValue}"/>
     <br>
     <input type="submit" th:value="Конвертировать">

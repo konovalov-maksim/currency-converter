@@ -2,6 +2,7 @@ package com.konovalov.converter.model;
 
 import com.konovalov.converter.entity.Currency;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 import java.util.List;
@@ -12,10 +13,14 @@ public class ConverterModel {
 
     private List<Currency> currenciesTo;
 
+    @NotNull(message = "Валюта не выбрана")
     private String currencyFromId;
 
+    @NotNull(message = "Валюта не выбрана")
     private String currencyToId;
 
+    @Min(value = 0, message = "Допустимы только положительные числа")
+    @Max(value = Long.MAX_VALUE, message = "Указанно слишком большое значение")
     private BigDecimal inputValue;
 
     private BigDecimal outputValue;

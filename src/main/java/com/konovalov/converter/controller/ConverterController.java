@@ -6,10 +6,12 @@ import com.konovalov.converter.service.CurrenciesManager;
 import com.konovalov.converter.service.RatesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +39,14 @@ public class ConverterController {
     }
 
     @PostMapping("/converter")
-    public String doConversion(@ModelAttribute ConverterModel converterModel) {
+    public String doConversion(
+            @ModelAttribute @Valid ConverterModel converterModel,
+            BindingResult bindingResult) {
         List<Currency> currencies = currenciesManager.findCurrenciesWithRelevantRate();
         converterModel.setCurrenciesFrom(currencies);
         converterModel.setCurrenciesTo(currencies);
+        if (bindingResult.hasErrors()) return "converter";
+        //TODO тут реализуем конвертацию
         return "converter";
     }
 
