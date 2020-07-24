@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.DateUtils;
 
 
 import javax.xml.bind.*;
@@ -39,6 +40,10 @@ public class CurrenciesManager {
         this.client = client;
         this.currencyRepo = currencyRepo;
         this.mapper = mapper;
+    }
+
+    public List<Currency> findCurrenciesWithRelevantRate() {
+        return currencyRepo.findCurrenciesForDate(DateUtils.createToday().getTime());
     }
 
     public void updateCurrencies() {
