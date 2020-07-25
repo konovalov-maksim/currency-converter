@@ -8,6 +8,9 @@
 <body>
 <a href="/converter">Конвертер валют</a>
 <a href="/conversions">История конвертация</a>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выйти"/>
+</form>
 <!--<h1>Конвертация валюты</h1>-->
 
 <form action="#" th:action="@{/converter}" method="post" id="converter-form" th:object="${converterModel}">

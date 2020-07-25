@@ -1,5 +1,6 @@
-package com.konovalov.converter;
+package com.konovalov.converter.config;
 
+import com.konovalov.converter.ConverterApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
