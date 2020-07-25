@@ -32,18 +32,6 @@ public class CurrenciesManager {
     @Value("${http.url.currencies}")
     private String currenciesRequestUrl;
 
-    @Value("${data.rubId}")
-    private String roubleId;
-
-    @Value("${data.rubName}")
-    private String roubleName;
-
-    @Value("${data.rubNumCode}")
-    private int roubleNumCode;
-
-    @Value("${data.rubCharCode}")
-    private String roubleCharCode;
-
     @Autowired
     public CurrenciesManager(
             OkHttpClient client,
@@ -75,11 +63,6 @@ public class CurrenciesManager {
         try {
             InputStream responseXml = response.body().byteStream();
             List<Currency> currencies = extractCurrencies(responseXml);
-            //В XML, получаемом от сервиса ЦБР отсутствуют данные по рублю
-            //Для того, чтобы в конвертер включить рубль, добавляем его вручную
-            Currency roubles = new Currency(roubleId, roubleName, roubleNumCode, roubleCharCode);
-            currencies.add(roubles);
-
             for (Currency currency : currencies) {
                 try {
                     currencyRepo.save(currency);

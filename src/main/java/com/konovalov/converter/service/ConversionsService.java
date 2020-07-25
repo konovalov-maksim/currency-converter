@@ -13,12 +13,10 @@ import org.thymeleaf.util.DateUtils;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
-public class ConversionService {
+public class ConversionsService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -26,7 +24,7 @@ public class ConversionService {
     private final RateRepository rateRepository;
 
     @Autowired
-    public ConversionService(ConversionRepository conversionRepo, RateRepository rateRepository) {
+    public ConversionsService(ConversionRepository conversionRepo, RateRepository rateRepository) {
         this.conversionRepo = conversionRepo;
         this.rateRepository = rateRepository;
     }

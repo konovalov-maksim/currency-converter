@@ -118,7 +118,7 @@ public class RatesManager {
     //Поскольку курсы остальных валют заданы по отношению к рублю, можно быть уверенным,
     //что для рубля номинал и курс всегда будут равны 1
     @Transactional
-    private void addRoubleRate() {
+    void addRoubleRate() {
         Rate roubleRate = new Rate();
         roubleRate.setCurrency(currencyRepository.getOne(roubleCurrencyId));
         roubleRate.setDate(today);

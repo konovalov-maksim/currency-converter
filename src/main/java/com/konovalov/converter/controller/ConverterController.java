@@ -2,7 +2,7 @@ package com.konovalov.converter.controller;
 
 import com.konovalov.converter.entity.Currency;
 import com.konovalov.converter.model.ConverterModel;
-import com.konovalov.converter.service.ConversionService;
+import com.konovalov.converter.service.ConversionsService;
 import com.konovalov.converter.service.CurrenciesManager;
 import com.konovalov.converter.service.RatesManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class ConverterController {
     private RatesManager ratesManager;
 
     @Autowired
-    private ConversionService conversionService;
+    private ConversionsService conversionsService;
 
     @GetMapping("/converter")
     public String showConverter(@ModelAttribute ConverterModel converterModel) {
@@ -60,7 +60,7 @@ public class ConverterController {
         converterModel.setCurrenciesFrom(currencies);
         converterModel.setCurrenciesTo(currencies);
         if (bindingResult.hasErrors()) return "converter";
-        BigDecimal outputValue = conversionService.convert(
+        BigDecimal outputValue = conversionsService.convert(
                 converterModel.getInputValue(),
                 converterModel.getCurrencyFromId(),
                 converterModel.getCurrencyToId()
