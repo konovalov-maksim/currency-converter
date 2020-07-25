@@ -6,9 +6,11 @@
     <title>История конвертаций</title>
 </head>
 <body>
+<a href="/converter">Конвертер валют</a>
+<a href="/conversions">История конвертация</a>
 
-<table>
-    <tr>
+<table class="border-table">
+    <tr class="table-header">
         <td>Исходная валюта</td>
         <td>Целевая валюта</td>
         <td>Исходная сумма</td>
@@ -20,7 +22,7 @@
         <td th:text="${conversion.rateTo.currency.toString()}"/>
         <td th:text="${conversion.inputValue}"/>
         <td th:text="${conversion.calculateOutputValue()}"/>
-        <td th:text="${conversion.date}"/>
+        <td th:text="${#dates.format(conversion.date, 'dd.MM.yyyy HH:mm')}"/>
     </tr>
 </table>
 </body>

@@ -14,6 +14,7 @@ import org.thymeleaf.util.DateUtils;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ConversionsService {
@@ -50,9 +51,9 @@ public class ConversionsService {
         }
     }
 
-//    public List<Conversion> findUserConversions(Long userId) {
-//        return conversionRepo.findAll();
-//    }
+    public List<Conversion> findUserConversions(Long userId) {
+        return conversionRepo.findAllByUserId(userId);
+    }
 
 
 }
