@@ -36,7 +36,7 @@ public class ConversionsService {
             //TODO исправить этот кусок, юзера определять автоматом
             User user = new User();
             user.setId(1L);
-            user.setLogin("Admin");
+            user.setUsername("user1");
 
             Date today = DateUtils.createToday().getTime();
             Rate rateFrom = rateRepository.findByCurrencyIdAndDate(currencyFromId, today);
