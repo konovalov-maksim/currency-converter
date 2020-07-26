@@ -51,8 +51,8 @@ public class ConversionsService {
         }
     }
 
-    public List<Conversion> findUserConversions(Long userId) {
-        return conversionRepo.findAllByUserId(userId);
+    public List<Conversion> findUserConversions() {
+        return conversionRepo.findAllForCurrentUser();
     }
 
 
