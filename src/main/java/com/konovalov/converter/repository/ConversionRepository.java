@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ConversionRepository extends PagingAndSortingRepository<Conversion, Long> {
-    @Query("select c from Conversion c where c.userId = #{principal.id}")
+    @Query("select c from Conversion c where c.userId = ?#{principal?.id}")
     List<Conversion> findAllForCurrentUser();
 }

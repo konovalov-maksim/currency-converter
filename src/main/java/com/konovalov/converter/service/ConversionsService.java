@@ -31,13 +31,8 @@ public class ConversionsService {
     }
 
     @Transactional
-    public BigDecimal convert(BigDecimal inputValue, String currencyFromId, String currencyToId) {
+    public BigDecimal convert(BigDecimal inputValue, String currencyFromId, String currencyToId, User user) {
         try {
-            //TODO исправить этот кусок, юзера определять автоматом
-            User user = new User();
-            user.setId(1L);
-            user.setUsername("user1");
-
             Date today = DateUtils.createToday().getTime();
             Rate rateFrom = rateRepository.findByCurrencyIdAndDate(currencyFromId, today);
             Rate rateTo = rateRepository.findByCurrencyIdAndDate(currencyToId, today);
