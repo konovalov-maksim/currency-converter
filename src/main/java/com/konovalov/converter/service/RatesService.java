@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
-public class RatesManager {
+public class RatesService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -43,7 +43,7 @@ public class RatesManager {
     private String roubleCurrencyId;
 
     @Autowired
-    public RatesManager(
+    public RatesService(
             OkHttpClient client,
             RateRepository rateRepo,
             CurrencyRepository currencyRepository,

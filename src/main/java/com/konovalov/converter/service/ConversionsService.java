@@ -3,18 +3,21 @@ package com.konovalov.converter.service;
 import com.konovalov.converter.entity.Conversion;
 import com.konovalov.converter.entity.Rate;
 import com.konovalov.converter.entity.User;
+import com.konovalov.converter.model.ConversionsFilterModel;
 import com.konovalov.converter.repository.ConversionRepository;
 import com.konovalov.converter.repository.RateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.DateUtils;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class ConversionsService {
@@ -46,8 +49,13 @@ public class ConversionsService {
         }
     }
 
-    public List<Conversion> findUserConversions() {
-        return conversionRepo.findAllForCurrentUser();
+    public Page<Conversion> findUserConversions(User user, ConversionsFilterModel filter, Pageable pageParams) {
+        return conversionRepo.findConversions(
+                pageParams,
+                user.getId(),
+                filter.getCurrencyFromId(),
+                filter.getCurrencyToId(),
+                filter.getDate());
     }
 
 

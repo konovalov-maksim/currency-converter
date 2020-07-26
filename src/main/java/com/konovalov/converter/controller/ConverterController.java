@@ -4,8 +4,8 @@ import com.konovalov.converter.entity.Currency;
 import com.konovalov.converter.entity.User;
 import com.konovalov.converter.model.ConverterModel;
 import com.konovalov.converter.service.ConversionsService;
-import com.konovalov.converter.service.CurrenciesManager;
-import com.konovalov.converter.service.RatesManager;
+import com.konovalov.converter.service.CurrenciesService;
+import com.konovalov.converter.service.RatesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -28,24 +28,24 @@ public class ConverterController {
     @Value("${default.currencyToId}")
     private String defaultCurrencyToId;
 
-    private final CurrenciesManager currenciesManager;
-    private final RatesManager ratesManager;
+    private final CurrenciesService currenciesService;
+    private final RatesService ratesService;
     private final ConversionsService conversionsService;
 
     @Autowired
-    public ConverterController(CurrenciesManager currenciesManager, RatesManager ratesManager, ConversionsService conversionsService) {
-        this.currenciesManager = currenciesManager;
-        this.ratesManager = ratesManager;
+    public ConverterController(CurrenciesService currenciesService, RatesService ratesService, ConversionsService conversionsService) {
+        this.currenciesService = currenciesService;
+        this.ratesService = ratesService;
         this.conversionsService = conversionsService;
     }
 
     @GetMapping("/converter")
     public String showConverter(@ModelAttribute ConverterModel converterModel) {
-        if (ratesManager.areRatesOutdated()) {
-            currenciesManager.updateCurrencies();
-            ratesManager.updateRates();
+        if (ratesService.areRatesOutdated()) {
+            currenciesService.updateCurrencies();
+            ratesService.updateRates();
         }
-        List<Currency> currencies = currenciesManager.findCurrenciesWithRelevantRate();
+        List<Currency> currencies = currenciesService.findCurrenciesWithRelevantRate();
         converterModel.setCurrenciesFrom(currencies);
         converterModel.setCurrenciesTo(currencies);
         if (converterModel.getCurrencyFromId() == null)
@@ -60,7 +60,7 @@ public class ConverterController {
             @ModelAttribute @Valid ConverterModel converterModel,
             BindingResult bindingResult,
             Authentication auth) {
-        List<Currency> currencies = currenciesManager.findCurrenciesWithRelevantRate();
+        List<Currency> currencies = currenciesService.findCurrenciesWithRelevantRate();
         converterModel.setCurrenciesFrom(currencies);
         converterModel.setCurrenciesTo(currencies);
         if (bindingResult.hasErrors()) return "converter";

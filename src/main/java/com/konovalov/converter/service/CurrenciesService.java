@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.DateUtils;
 
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CurrenciesManager {
+public class CurrenciesService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -33,7 +34,7 @@ public class CurrenciesManager {
     private String currenciesRequestUrl;
 
     @Autowired
-    public CurrenciesManager(
+    public CurrenciesService(
             OkHttpClient client,
             CurrencyRepository currencyRepo,
             ModelMapper mapper) {
@@ -44,6 +45,10 @@ public class CurrenciesManager {
 
     public List<Currency> findCurrenciesWithRelevantRate() {
         return currencyRepo.findCurrenciesForDate(DateUtils.createToday().getTime());
+    }
+
+    public List<Currency> findAllCurrencies() {
+        return currencyRepo.findAll(Sort.by(Sort.Direction.ASC, "charCode"));
     }
 
     public void updateCurrencies() {

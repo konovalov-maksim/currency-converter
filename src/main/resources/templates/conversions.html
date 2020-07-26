@@ -12,6 +12,22 @@
     <input type="submit" value="Выйти"/>
 </form>
 
+<form action="#" th:action="@{/conversions}" method="get" th:object="${filter}">
+    <input type="date" th:field="*{dateStr}"/>
+    <select th:field="*{currencyFromId}">
+        <option th:value="0">Не выбрано</option>
+        <option th:each="currency : ${currencies}"
+                th:value="${currency.id}"
+                th:text="${currency.toString()}"/>
+    </select>
+    <select th:field="*{currencyToId}">
+        <option th:value="0">Не выбрано</option>
+        <option th:each="currency : ${currencies}"
+                th:value="${currency.id}"
+                th:text="${currency.toString()}"/>
+    </select>
+    <input type="submit" value="Найти">
+</form>
 <table class="border-table">
     <tr class="table-header">
         <td>Исходная валюта</td>

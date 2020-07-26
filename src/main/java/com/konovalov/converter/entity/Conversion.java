@@ -1,5 +1,7 @@
 package com.konovalov.converter.entity;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
