@@ -7,7 +7,7 @@
 </head>
 <body>
 <a href="/converter">Конвертер валют</a>
-<a href="/conversions">История конвертация</a>
+<a href="/conversions">История конвертации</a>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Выйти"/>
 </form>
@@ -28,6 +28,7 @@
     </select>
     <input type="submit" value="Найти">
 </form>
+<div th:text="'Всего конвертаций: ' + ${itemsCount}"/>
 <table class="border-table">
     <tr class="table-header">
         <td>Исходная валюта</td>
@@ -44,5 +45,33 @@
         <td th:text="${#dates.format(conversion.date, 'dd.MM.yyyy HH:mm')}"/>
     </tr>
 </table>
+
+
+<div class="pagination-control" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+    <a th:text="'<'"
+       th:href="${urlBuilder.replaceQueryParam('page', pagination.getCurPageNum()).build().toUriString()}"
+       th:if="${pagination.getCurPageNum() > 0}"/>
+    <a th:text="1"
+       th:href="${urlBuilder.replaceQueryParam('page', 1).build().toUriString()}"
+       th:if="${pagination.isPrevPagesSkipped()}"/>
+    <span th:text="..."
+          th:if="${pagination.isPrevPagesSkipped()}"/>
+    <a th:each="pageNum : ${pagination.getPrevPagesNums()}"
+       th:text="${pageNum + 1}"
+       th:href="${urlBuilder.replaceQueryParam('page', pageNum + 1).build().toUriString()}"/>
+    <a th:text="${pagination.getCurPageNum() + 1}"
+       th:if="${pagination.getLastPageNum() > 0}"/>
+    <a th:each="pageNum : ${pagination.getNextPagesNums()}"
+       th:text="${pageNum + 1}"
+       th:href="${urlBuilder.replaceQueryParam('page', pageNum + 1).build().toUriString()}"/>
+    <span th:text="..."
+          th:if="${pagination.isNextPagesSkipped()}"/>
+    <a th:text="${pagination.getLastPageNum() + 1}"
+       th:href="${urlBuilder.replaceQueryParam('page', pagination.getLastPageNum() + 1).build().toUriString()}"
+       th:if="${pagination.isNextPagesSkipped()}"/>
+    <a th:text="'>'"
+       th:href="${urlBuilder.replaceQueryParam('page', pagination.getCurPageNum() + 2).build().toUriString()}"
+       th:if="${pagination.getCurPageNum() < pagination.getLastPageNum()}"/>
+</div>
 </body>
 </html>

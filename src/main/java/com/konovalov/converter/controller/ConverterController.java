@@ -22,10 +22,10 @@ import java.util.List;
 @Controller
 public class ConverterController {
 
-    @Value("${default.currencyFromId}")
+    @Value("${view.defaultCurrencyFromId}")
     private String defaultCurrencyFromId;
 
-    @Value("${default.currencyToId}")
+    @Value("${view.defaultCurrencyToId}")
     private String defaultCurrencyToId;
 
     private final CurrenciesService currenciesService;
