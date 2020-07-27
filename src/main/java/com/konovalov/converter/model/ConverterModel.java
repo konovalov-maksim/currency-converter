@@ -19,7 +19,7 @@ public class ConverterModel {
     @NotNull(message = "Валюта не выбрана")
     private String currencyToId;
 
-    @Digits(integer = 16, fraction = 4, message = "Недопустимое значение")
+    @Digits(integer = 12, fraction = 4, message = "Недопустимое значение")
     @DecimalMin(value = "0.0", message = "Недопустимое значение")
     @NotNull(message = "Значение не указано")
     private BigDecimal inputValue;

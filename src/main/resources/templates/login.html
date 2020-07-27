@@ -20,7 +20,6 @@
         <div class="form-group">
             <input type="password" name="password" class="form-control" placeholder="Пароль">
             <small class="form-text text-danger" th:if="${param.error}">Некорректный логин или пароль</small>
-            <small class="form-text text-success" th:if="${param.logout}">Выход выполнен</small>
         </div>
         <button type="submit" class="btn btn-lg btn-primary btn-block">Войти</button>
     </form>
