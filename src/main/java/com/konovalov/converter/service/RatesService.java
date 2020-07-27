@@ -62,7 +62,8 @@ public class RatesService {
     public void updateRates() {
         //Если в запросе не указывать дату, могут быть получены данные на завтрашний день
         //Задача - получить данные на сегодня, поэтому явно задаем дату
-        String todayStr = new SimpleDateFormat("dd/MM/yyyy").format(DateUtils.createToday().getTime());
+        //(При этом все равно есть вероятность получить курсы на более раннюю дату)
+        String todayStr = new SimpleDateFormat("dd/MM/yyyy").format(today);
         HttpUrl requestUrl = HttpUrl.parse(ratesRequestUrl).newBuilder()
                 .addQueryParameter("date_req", todayStr)
                 .build();
@@ -83,8 +84,11 @@ public class RatesService {
             InputStream responseXml = response.body().byteStream();
             RatesListDto ratesListDto = extractRatesList(responseXml);
             logger.info("Получено курсов валют: " + ratesListDto.getRatesList().size());
-            //TODO сделать рефакторинг
             if (ratesListDto.getRatesList().isEmpty()) return;
+            //В XML, получаемом от сервиса ЦБР, отсутствуют данные по курсу рубля. Добавляем их вручную
+            //Поскольку курсы остальных валют заданы по отношению к рублю, можно быть уверенным,
+            //что для рубля номинал и курс всегда будут равны 1
+            ratesListDto.getRatesList().add(new RateDto(roubleCurrencyId, 1, new BigDecimal(1)));
             for (RateDto rateDto : ratesListDto.getRatesList()) {
                 try {
                     saveRate(rateDto, ratesListDto.getDate());
@@ -92,7 +96,6 @@ public class RatesService {
                     logger.error("Ошибка обновления курса валюты " + rateDto, e);
                 }
             }
-            addRoubleRate();
             logger.info("Обновление курсов валют завершено");
         } catch (Exception e) {
             logger.error("Ошибка обработки ответа по запросу на получение курсов валют", e);
@@ -107,24 +110,12 @@ public class RatesService {
 
     @Transactional
     void saveRate(RateDto rateDto, Date rateDate) {
-        Rate rate = mapper.map(rateDto, Rate.class);
-        rate.setDate(rateDate);
-        rate.setCurrency(currencyRepository.getOne(rateDto.getCurrencyId()));
-        rateRepo.save(rate);
-    }
-
-    //В XML, получаемом от сервиса ЦБР отсутствуют данные по курсу рубля
-    //Для того, чтобы в конвертер включить рубль, добавляем его курс вручную
-    //Поскольку курсы остальных валют заданы по отношению к рублю, можно быть уверенным,
-    //что для рубля номинал и курс всегда будут равны 1
-    @Transactional
-    void addRoubleRate() {
-        Rate roubleRate = new Rate();
-        roubleRate.setCurrency(currencyRepository.getOne(roubleCurrencyId));
-        roubleRate.setDate(today);
-        roubleRate.setNominal(1);
-        roubleRate.setValue(new BigDecimal(1));
-        rateRepo.save(roubleRate);
+        Rate existingRate = rateRepo.findByCurrencyIdAndDate(rateDto.getCurrencyId(), rateDate);
+        if (existingRate != null) return;
+        Rate newRate = mapper.map(rateDto, Rate.class);
+        newRate.setDate(rateDate);
+        newRate.setCurrency(currencyRepository.getOne(rateDto.getCurrencyId()));
+        rateRepo.save(newRate);
     }
 
 }

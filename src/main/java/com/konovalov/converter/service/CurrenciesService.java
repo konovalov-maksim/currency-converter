@@ -44,7 +44,7 @@ public class CurrenciesService {
     }
 
     public List<Currency> findCurrenciesWithRelevantRate() {
-        return currencyRepo.findCurrenciesForDate(DateUtils.createToday().getTime());
+        return currencyRepo.findCurrenciesWithRelevantRates();
     }
 
     public List<Currency> findAllCurrencies() {

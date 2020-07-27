@@ -11,9 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.DateUtils;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -36,9 +34,9 @@ public class ConversionsService {
     @Transactional
     public BigDecimal convert(BigDecimal inputValue, String currencyFromId, String currencyToId, User user) {
         try {
-            Date today = DateUtils.createToday().getTime();
-            Rate rateFrom = rateRepository.findByCurrencyIdAndDate(currencyFromId, today);
-            Rate rateTo = rateRepository.findByCurrencyIdAndDate(currencyToId, today);
+            Date lastRatesDate = rateRepository.findLastRatesDate();
+            Rate rateFrom = rateRepository.findByCurrencyIdAndDate(currencyFromId, lastRatesDate);
+            Rate rateTo = rateRepository.findByCurrencyIdAndDate(currencyToId, lastRatesDate);
             Conversion conversion = new Conversion(inputValue, rateFrom, rateTo, user);
             conversionRepo.save(conversion);
             return conversion.calculateOutputValue();

@@ -20,6 +20,15 @@ public class RateDto {
     @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal value;
 
+    public RateDto() {
+    }
+
+    public RateDto(String currencyId, Integer nominal, BigDecimal value) {
+        this.currencyId = currencyId;
+        this.nominal = nominal;
+        this.value = value;
+    }
+
     public String getCurrencyId() {
         return currencyId;
     }
