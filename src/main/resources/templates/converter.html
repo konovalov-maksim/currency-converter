@@ -9,15 +9,14 @@
 </head>
 <body class="bg-light">
 
-<nav class="navbar navbar-dark bg-primary justify-content-end fixed-top">
+<nav class="navbar navbar-dark bg-primary justify-content-end">
     <form class="form-inline" th:action="@{/logout}" method="post">
         <button class="btn btn-outline-light" type="submit">Выйти</button>
     </form>
 </nav>
 
-<div class="vertical-center">
 
-    <div class="container bg-white shadow rounded py-4">
+    <div class="container bg-white shadow rounded py-4 my-3">
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link waves-effect waves-light active" href="/converter">Конвертер</a>
@@ -64,8 +63,6 @@
             </form>
         </div>
     </div>
-
-</div>
 
 </body>
 </html>

@@ -1,7 +1,12 @@
 .vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
+  min-height: 100%;
+  min-height: 100vh;
 
   display: flex;
   align-items: center;
+}
+
+.thead-dark th {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
 }

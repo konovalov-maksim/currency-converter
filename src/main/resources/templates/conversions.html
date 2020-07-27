@@ -3,75 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <link type="text/css" rel="stylesheet" href="/style.css">
-    <title>История конвертаций</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Конвертор валюты - История</title>
 </head>
-<body>
-<a href="/converter">Конвертер валют</a>
-<a href="/conversions">История конвертации</a>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Выйти"/>
-</form>
+<body class="bg-light">
 
-<form action="#" th:action="@{/conversions}" method="get" th:object="${filter}">
-    <input type="date" th:field="*{dateStr}"/>
-    <select th:field="*{currencyFromId}">
-        <option th:value="0">Не выбрано</option>
-        <option th:each="currency : ${currencies}"
-                th:value="${currency.id}"
-                th:text="${currency.toString()}"/>
-    </select>
-    <select th:field="*{currencyToId}">
-        <option th:value="0">Не выбрано</option>
-        <option th:each="currency : ${currencies}"
-                th:value="${currency.id}"
-                th:text="${currency.toString()}"/>
-    </select>
-    <input type="submit" value="Найти">
-</form>
-<div th:text="'Всего конвертаций: ' + ${itemsCount}"/>
-<table class="bordered-table">
-    <tr class="table-header">
-        <td>Исходная валюта</td>
-        <td>Целевая валюта</td>
-        <td>Исходная сумма</td>
-        <td>Получаемая сумма</td>
-        <td>Дата</td>
-    </tr>
-    <tr th:each="conversion : ${conversionsList}">
-        <td th:text="${conversion.rateFrom.currency.toString()}"/>
-        <td th:text="${conversion.rateTo.currency.toString()}"/>
-        <td th:text="${conversion.inputValue}"/>
-        <td th:text="${conversion.calculateOutputValue()}"/>
-        <td th:text="${#dates.format(conversion.date, 'dd.MM.yyyy HH:mm')}"/>
-    </tr>
-</table>
+<nav class="navbar navbar-dark bg-primary justify-content-end">
+    <form class="form-inline" th:action="@{/logout}" method="post">
+        <button class="btn btn-outline-light" type="submit">Выйти</button>
+    </form>
+</nav>
 
 
-<div class="pagination-control" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
-    <a th:text="'<'"
-       th:href="${urlBuilder.replaceQueryParam('page', pagination.getCurPageNum()).build().toUriString()}"
-       th:if="${pagination.getCurPageNum() > 0}"/>
-    <a th:text="1"
-       th:href="${urlBuilder.replaceQueryParam('page', 1).build().toUriString()}"
-       th:if="${pagination.isPrevPagesSkipped()}"/>
-    <span th:text="..."
-          th:if="${pagination.isPrevPagesSkipped()}"/>
-    <a th:each="pageNum : ${pagination.getPrevPagesNums()}"
-       th:text="${pageNum + 1}"
-       th:href="${urlBuilder.replaceQueryParam('page', pageNum + 1).build().toUriString()}"/>
-    <a th:text="${pagination.getCurPageNum() + 1}"
-       th:if="${pagination.getLastPageNum() > 0}"/>
-    <a th:each="pageNum : ${pagination.getNextPagesNums()}"
-       th:text="${pageNum + 1}"
-       th:href="${urlBuilder.replaceQueryParam('page', pageNum + 1).build().toUriString()}"/>
-    <span th:text="..."
-          th:if="${pagination.isNextPagesSkipped()}"/>
-    <a th:text="${pagination.getLastPageNum() + 1}"
-       th:href="${urlBuilder.replaceQueryParam('page', pagination.getLastPageNum() + 1).build().toUriString()}"
-       th:if="${pagination.isNextPagesSkipped()}"/>
-    <a th:text="'>'"
-       th:href="${urlBuilder.replaceQueryParam('page', pagination.getCurPageNum() + 2).build().toUriString()}"
-       th:if="${pagination.getCurPageNum() < pagination.getLastPageNum()}"/>
-</div>
+    <div class="container bg-white shadow rounded py-4 my-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-light" href="/converter">Конвертер</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-light active" href="/conversions">История конвертаций</a>
+            </li>
+        </ul>
+
+        <div class="container">
+            <form action="#" th:action="@{/conversions}" method="get" th:object="${filter}">
+                <div class="form-row my-3 align-items-end">
+                    <div class="form-group col-md-3 my-2">
+                        <label>Дата:</label>
+                        <input type="date" th:field="*{dateStr}" class="form-control"/>
+                    </div>
+                    <div class="form-group col-md-4 my-2">
+                        <label>Исходная валюта:</label>
+                        <select th:field="*{currencyFromId}" class="form-control">
+                            <option th:value="0">Не выбрано</option>
+                            <option th:each="currency : ${currencies}"
+                                    th:value="${currency.id}"
+                                    th:text="${currency.toString()}"/>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 my-2">
+                        <label>Получаемая валюта:</label>
+                        <select th:field="*{currencyToId}" class="form-control">
+                            <option th:value="0">Не выбрано</option>
+                            <option th:each="currency : ${currencies}"
+                                    th:value="${currency.id}"
+                                    th:text="${currency.toString()}"/>
+                        </select>
+                    </div>
+                    <div class="col-md-1 my-2">
+                        <button type="submit" class="btn btn-primary">Найти</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="container">
+                <div th:text="'Найдено операций: ' + ${itemsCount}" class="mb-2"/>
+
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th style="background-color: #007bff">Исходная валюта</th>
+                            <th>Целевая валюта</th>
+                            <th>Исходная сумма</th>
+                            <th>Получаемая сумма</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tr th:each="conversion : ${conversionsList}">
+                        <td th:text="${conversion.rateFrom.currency.toString()}"/>
+                        <td th:text="${conversion.rateTo.currency.toString()}"/>
+                        <td th:text="${conversion.inputValue}"/>
+                        <td th:text="${conversion.calculateOutputValue()}"/>
+                        <td th:text="${#dates.format(conversion.date, 'dd.MM.yyyy HH:mm')}"/>
+                    </tr>
+                </table>
+
+                <nav class="navbar justify-content-center">
+                    <ul class="pagination"
+                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                        <li class="page-item" th:if="${pagination.getCurPageNum() > 0}">
+                            <a class="page-link"
+                               th:text="'&laquo;'"
+                               th:href="${urlBuilder.replaceQueryParam('page', pagination.getCurPageNum()).build().toUriString()}"/>
+                        </li>
+                        <li class="page-item" th:if="${pagination.isPrevPagesSkipped()}">
+                            <a class="page-link"
+                               th:text="1"
+                               th:href="${urlBuilder.replaceQueryParam('page', 1).build().toUriString()}"
+                               />
+                        </li>
+                        <li class="page-item" th:if="${pagination.isPrevPagesSkipped()}">
+                            <a class="page-link" th:text="..."/>
+                        </li>
+                        <li class="page-item" th:each="pageNum : ${pagination.getPrevPagesNums()}">
+                            <a class="page-link"
+                               th:text="${pageNum + 1}"
+                               th:href="${urlBuilder.replaceQueryParam('page', pageNum + 1).build().toUriString()}"/>
+                        </li>
+                        <li class="page-item" th:if="${pagination.getLastPageNum() > 0}">
+                            <a class="page-link"
+                               th:text="${pagination.getCurPageNum() + 1}"/>
+                        </li>
+                        <li th:each="pageNum : ${pagination.getNextPagesNums()}">
+                            <a class="page-link"
+                               th:text="${pageNum + 1}"
+                               th:href="${urlBuilder.replaceQueryParam('page', pageNum + 1).build().toUriString()}"/>
+                        </li>
+                        <li class="page-item" th:if="${pagination.isNextPagesSkipped()}">
+                            <a class="page-link" th:text="..."/>
+                        </li>
+                        <li class="page-item" th:if="${pagination.isNextPagesSkipped()}">
+                            <a class="page-link"
+                               th:text="${pagination.getLastPageNum() + 1}"
+                               th:href="${urlBuilder.replaceQueryParam('page', pagination.getLastPageNum() + 1).build().toUriString()}"/>
+                        </li>
+                        <li class="page-item" th:if="${pagination.getCurPageNum() < pagination.getLastPageNum()}">
+                            <a class="page-link"
+                               th:text="'&raquo;'"
+                               th:href="${urlBuilder.replaceQueryParam('page', pagination.getCurPageNum() + 2).build().toUriString()}"/>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
