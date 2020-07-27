@@ -9,45 +9,62 @@
 </head>
 <body class="bg-light">
 
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <ul class="navbar-nav mr-auto">
+<nav class="navbar navbar-dark bg-primary justify-content-end fixed-top">
+    <form class="form-inline" th:action="@{/logout}" method="post">
+        <button class="btn btn-outline-light" type="submit">Выйти</button>
+    </form>
+</nav>
+
+<div class="vertical-center">
+
+    <div class="container bg-white shadow rounded py-4">
+        <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="/converter">Конвертер</a>
+                <a class="nav-link waves-effect waves-light active" href="/converter">Конвертер</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/conversions">История конвертации</a>
+                <a class="nav-link waves-effect waves-light" href="/conversions">История конвертаций</a>
             </li>
         </ul>
 
-        <form class="form-inline justify-content-end" th:action="@{/logout}" method="post">
-            <button class="btn btn btn-outline-light" type="submit">Выйти</button>
-        </form>
-    </nav>
-    <div class="container border bg-white shadow rounded">
-        <h1>Конвертер валюты</h1>
-
-        <form action="#" th:action="@{/converter}" method="post" id="converter-form" th:object="${converterModel}">
-            <select th:field="*{currencyFromId}" th:selected="${currencyToId}">
-                <option th:each="currency : ${converterModel.currenciesFrom}"
-                        th:value="${currency.id}"
-                        th:text="${currency.toString()}"/>
-            </select>
-            <br>
-            <select th:field="*{currencyToId}" th:selected="${currencyToId}">
-                <option th:each="currency : ${converterModel.currenciesFrom}"
-                        th:value="${currency.id}"
-                        th:text="${currency.toString()}"/>
-            </select>
-            <br>
-            <input type="text" th:field="*{inputValue}"/>
-            <span  th:if="${#fields.hasErrors('inputValue')}" th:errors="*{inputValue}"/>
-            <br>
-            <input type="text" th:field="*{outputValue}"/>
-            <br>
-            <input type="submit" th:value="Конвертировать">
-        </form>
+        <div class="container">
+            <h2 class="secondary-heading my-3">Конвертер валюты</h2>
+            <form  action="#" th:action="@{/converter}" method="post" th:object="${converterModel}">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Исходная валюта:</label>
+                        <select th:field="*{currencyFromId}" th:selected="${currencyToId}" class="form-control">
+                            <option th:each="currency : ${converterModel.currenciesFrom}"
+                                    th:value="${currency.id}"
+                                    th:text="${currency.toString()}"/>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Получаемая валюта:</label>
+                        <select th:field="*{currencyToId}" th:selected="${currencyToId}" class="form-control">
+                            <option th:each="currency : ${converterModel.currenciesFrom}"
+                                    th:value="${currency.id}"
+                                    th:text="${currency.toString()}"/>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Исходное значение:</label>
+                        <input type="text" th:field="*{inputValue}" class="form-control"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Получаемое значение:</label>
+                        <input type="text" th:field="*{outputValue}" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-primary">Конвертировать</button>
+                </div>
+            </form>
+        </div>
     </div>
+
 </div>
 
 </body>
