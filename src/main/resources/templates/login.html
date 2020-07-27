@@ -8,31 +8,29 @@
     <title>Конвертер валюты - Вход</title>
 </head>
 <body class="vertical-center bg-light">
+    <div class="jumbotron container border bg-white shadow rounded" style="width: 400px;">
+        <!--Отображаем, когда авторизация не пройдена-->
+        <form method="post" th:action="@{/login}" sec:authorize="!isAuthenticated()">
+            <h1 class="display-8">Вход</h1>
+            <p class="lead">Пожалуйста, войдите, чтобы продолжить</p>
+            <hr class="my-4">
+            <div class="form-group">
+                <input type="text"  name="username" class="form-control" placeholder="Логин">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Пароль">
+                <small class="form-text text-danger" th:if="${param.error}">Некорректный логин или пароль</small>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Войти</button>
+        </form>
 
-<div class="jumbotron container border bg-white shadow rounded" style="width: 400px;">
-    <!--Отображаем, когда авторизация не пройдена-->
-    <form method="post" th:action="@{/login}" sec:authorize="!isAuthenticated()">
-        <h1 class="display-8">Вход</h1>
-        <p class="lead">Пожалуйста, войдите, чтобы продолжить</p>
-        <hr class="my-4">
-        <div class="form-group">
-            <input type="text"  name="username" class="form-control" placeholder="Логин">
-        </div>
-        <div class="form-group">
-            <input type="password" name="password" class="form-control" placeholder="Пароль">
-            <small class="form-text text-danger" th:if="${param.error}">Некорректный логин или пароль</small>
-        </div>
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Войти</button>
-    </form>
-
-    <!--Отображаем, когда авторизация пройдена-->
-    <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">
-        <h1 class="display-8">Вход выполнен</h1>
-        <p class="lead">Вы вошли как <span sec:authentication="name"/></p>
-        <hr class="my-4">
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Выйти</button>
-    </form>
-</div>
-
+        <!--Отображаем, когда авторизация пройдена-->
+        <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">
+            <h1 class="display-8">Вход выполнен</h1>
+            <p class="lead">Вы вошли как <span sec:authentication="name"/></p>
+            <hr class="my-4">
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Выйти</button>
+        </form>
+    </div>
 </body>
 </html>
