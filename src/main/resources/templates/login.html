@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <link type="text/css" rel="stylesheet" href="/style.css">
@@ -10,7 +10,8 @@
 <body class="vertical-center bg-light">
 
 <div class="jumbotron container border bg-white shadow rounded" style="width: 400px;">
-    <form method="post" th:action="@{/login}">
+    <!--Отображаем, когда авторизация не пройдена-->
+    <form method="post" th:action="@{/login}" sec:authorize="!isAuthenticated()">
         <h1 class="display-8">Вход</h1>
         <p class="lead">Пожалуйста, войдите, чтобы продолжить</p>
         <hr class="my-4">
@@ -22,6 +23,14 @@
             <small class="form-text text-danger" th:if="${param.error}">Некорректный логин или пароль</small>
         </div>
         <button type="submit" class="btn btn-lg btn-primary btn-block">Войти</button>
+    </form>
+
+    <!--Отображаем, когда авторизация пройдена-->
+    <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">
+        <h1 class="display-8">Вход выполнен</h1>
+        <p class="lead">Вы вошли как <span sec:authentication="name"/></p>
+        <hr class="my-4">
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Выйти</button>
     </form>
 </div>
 
