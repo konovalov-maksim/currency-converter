@@ -14,12 +14,13 @@ import java.util.Date;
 @Repository
 public interface ConversionRepository extends PagingAndSortingRepository<Conversion, Long> {
 
-    @Query("from Conversion c " +
-            "where c.userId = :userId " +
-            "and (c.rateFrom.currencyId = :currencyFromId or :currencyFromId is null) " +
-            "and (c.rateTo.currencyId = :currencyToId or :currencyToId is null) " +
-            "and (date_trunc('day', c.date) = :date or cast(:date AS date) is null)"
-    )
+    @Query("""
+            from Conversion c 
+            where c.userId = :userId 
+            and (c.rateFrom.currencyId = :currencyFromId or :currencyFromId is null)
+            and (c.rateTo.currencyId = :currencyToId or :currencyToId is null) 
+            and (date_trunc('day', c.date) = :date or cast(:date AS date) is null)
+            """)
     Page<Conversion> findConversions(
             Pageable pageRequest,
             @Param("userId") Long userId,
