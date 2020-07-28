@@ -42,8 +42,7 @@ public class ConversionsService {
             return conversion.calculateOutputValue();
         } catch (Exception e) {
             logger.error("Ошибка конвертации", e);
-            //TODO подумать, может лучше пробросить исключение
-            return new BigDecimal(0);
+            throw e;
         }
     }
 

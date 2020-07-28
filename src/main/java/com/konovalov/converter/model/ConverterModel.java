@@ -19,12 +19,14 @@ public class ConverterModel {
     @NotNull(message = "Валюта не выбрана")
     private String currencyToId;
 
-    @Digits(integer = 12, fraction = 4, message = "Недопустимое значение")
-    @DecimalMin(value = "0.0", message = "Недопустимое значение")
+    @Digits(integer = 12, fraction = 4, message = "Слишком большое значение")
+    @DecimalMin(value = "0.0", message = "Допустимы только положительные значения")
     @NotNull(message = "Значение не указано")
     private BigDecimal inputValue;
 
     private BigDecimal outputValue;
+
+    private boolean hasErrors = false;
 
     public List<Currency> getCurrenciesFrom() {
         return currenciesFrom;
@@ -72,5 +74,13 @@ public class ConverterModel {
 
     public void setOutputValue(BigDecimal outputValue) {
         this.outputValue = outputValue;
+    }
+
+    public boolean getHasErrors() {
+        return hasErrors;
+    }
+
+    public void setHasErrors(boolean hasErrors) {
+        this.hasErrors = hasErrors;
     }
 }

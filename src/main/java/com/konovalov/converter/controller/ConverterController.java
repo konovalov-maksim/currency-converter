@@ -24,10 +24,8 @@ public class ConverterController {
 
     @Value("${view.defaultCurrencyFromId}")
     private String defaultCurrencyFromId;
-
     @Value("${view.defaultCurrencyToId}")
     private String defaultCurrencyToId;
-
     @Value("${view.defaultInputValue}")
     private int defaultInputValue;
 
@@ -69,13 +67,17 @@ public class ConverterController {
         converterModel.setCurrenciesFrom(currencies);
         converterModel.setCurrenciesTo(currencies);
         if (bindingResult.hasErrors()) return "converter";
-        BigDecimal outputValue = conversionsService.convert(
-                converterModel.getInputValue(),
-                converterModel.getCurrencyFromId(),
-                converterModel.getCurrencyToId(),
-                (User) auth.getPrincipal()
-        );
-        converterModel.setOutputValue(outputValue);
+        try {
+            BigDecimal outputValue = conversionsService.convert(
+                    converterModel.getInputValue(),
+                    converterModel.getCurrencyFromId(),
+                    converterModel.getCurrencyToId(),
+                    (User) auth.getPrincipal()
+            );
+            converterModel.setOutputValue(outputValue);
+        } catch (Exception e) {
+            converterModel.setHasErrors(true);
+        }
         return "converter";
     }
 
