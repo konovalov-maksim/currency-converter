@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @XmlRootElement(name ="ValCurs")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -32,5 +33,19 @@ public class RatesListDto {
 
     public void setDate(Date  date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RatesListDto that = (RatesListDto) o;
+        return Objects.equals(ratesList, that.ratesList) &&
+                Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ratesList, date);
     }
 }

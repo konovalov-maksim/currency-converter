@@ -5,6 +5,7 @@ import com.konovalov.converter.dto.adapter.BigDecimalAdapter;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @XmlRootElement(name = "Valute")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -56,5 +57,20 @@ public class RateDto {
     @Override
     public String toString() {
         return currencyId + " : " + value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RateDto rateDto = (RateDto) o;
+        return Objects.equals(currencyId, rateDto.currencyId) &&
+                Objects.equals(nominal, rateDto.nominal) &&
+                Objects.equals(value, rateDto.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currencyId, nominal, value);
     }
 }
