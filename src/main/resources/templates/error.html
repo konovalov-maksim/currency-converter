@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Конвертор валюты - История</title>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-primary justify-content-end">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+        </svg>
+        <span class="navbar-text mr-4 ml-2" sec:authentication="name"/>
+        <form class="form-inline" th:action="@{/logout}" method="post">
+            <button class="btn btn-outline-light" type="submit">Выйти</button>
+        </form>
+    </nav>
+    <div class="container bg-white shadow rounded py-4 my-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-light" href="/converter">Конвертер</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-ligh" href="/conversions">История конвертаций</a>
+            </li>
+        </ul>
+
+        <div class="container">
+            <h2 class="secondary-heading my-3" th:text="${errorTitle}"/>
+            <p th:text="${errorMsg}"/>
+        </div>
+    </div>
+</body>
+</html>
