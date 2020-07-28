@@ -8,16 +8,16 @@ import java.util.List;
 
 @XmlRootElement(name ="Valuta")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CurrencyItemsList {
+public class CurrenciesListDto {
 
     @XmlElement(name = "Item")
-    private List<CurrencyItem> currencyItems;
+    private List<CurrencyDto> currencyDtos;
 
-    public List<CurrencyItem> getCurrencyItems() {
-        return currencyItems;
+    public List<CurrencyDto> getCurrencyDtos() {
+        return currencyDtos;
     }
 
-    public void setCurrencyItems(List<CurrencyItem> currencyItems) {
-        this.currencyItems = currencyItems;
+    public void setCurrencyDtos(List<CurrencyDto> currencyDtos) {
+        this.currencyDtos = currencyDtos;
     }
 }

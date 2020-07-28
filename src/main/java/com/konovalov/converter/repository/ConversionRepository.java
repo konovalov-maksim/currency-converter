@@ -14,7 +14,6 @@ import java.util.Date;
 @Repository
 public interface ConversionRepository extends PagingAndSortingRepository<Conversion, Long> {
 
-    //TODO add textblock
     @Query("from Conversion c " +
             "where c.userId = :userId " +
             "and (c.rateFrom.currencyId = :currencyFromId or :currencyFromId is null) " +

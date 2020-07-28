@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "Item")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CurrencyItem {
+public class CurrencyDto {
 
     @XmlAttribute(name = "ID")
     private String id;

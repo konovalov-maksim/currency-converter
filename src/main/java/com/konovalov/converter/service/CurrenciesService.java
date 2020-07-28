@@ -1,6 +1,6 @@
 package com.konovalov.converter.service;
 
-import com.konovalov.converter.dto.CurrencyItemsList;
+import com.konovalov.converter.dto.CurrenciesListDto;
 import com.konovalov.converter.entity.Currency;
 import com.konovalov.converter.repository.CurrencyRepository;
 import okhttp3.*;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.DateUtils;
 
 
 import javax.xml.bind.*;
@@ -84,11 +83,11 @@ public class CurrenciesService {
     }
 
     private List<Currency> extractCurrencies(InputStream responseXml) throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(CurrencyItemsList.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(CurrenciesListDto.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        CurrencyItemsList items = (CurrencyItemsList) unmarshaller.unmarshal(responseXml);
-        logger.info("Найдено валют: " + items.getCurrencyItems().size());
-        return items.getCurrencyItems().stream()
+        CurrenciesListDto currenciesListDto = (CurrenciesListDto) unmarshaller.unmarshal(responseXml);
+        logger.info("Найдено валют: " + currenciesListDto.getCurrencyDtos().size());
+        return currenciesListDto.getCurrencyDtos().stream()
                 .filter(item -> !item.getCharCode().isEmpty()) //Валюты без ISO кода - устаревшие, не сохраняем их
                 .map(item -> mapper.map(item, Currency.class))
                 .collect(Collectors.toList());
