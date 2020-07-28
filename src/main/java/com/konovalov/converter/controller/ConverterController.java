@@ -28,6 +28,9 @@ public class ConverterController {
     @Value("${view.defaultCurrencyToId}")
     private String defaultCurrencyToId;
 
+    @Value("${view.defaultInputValue}")
+    private int defaultInputValue;
+
     private final CurrenciesService currenciesService;
     private final RatesService ratesService;
     private final ConversionsService conversionsService;
@@ -52,6 +55,8 @@ public class ConverterController {
             converterModel.setCurrencyFromId(defaultCurrencyFromId);
         if (converterModel.getCurrencyToId() == null)
             converterModel.setCurrencyToId(defaultCurrencyToId);
+        if (converterModel.getInputValue() == null)
+            converterModel.setInputValue(new BigDecimal(defaultInputValue));
         return "converter";
     }
 
