@@ -1,13 +1,12 @@
-package com.konovalov.converter.dto;
+package com.konovalov.converter.model.jaxb;
 
-import com.konovalov.converter.dto.adapter.DateAdapter;
+import com.konovalov.converter.adapter.DateAdapter;
 import lombok.Data;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @XmlRootElement(name ="ValCurs")
 @XmlAccessorType(XmlAccessType.FIELD)

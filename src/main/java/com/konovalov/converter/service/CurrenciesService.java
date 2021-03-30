@@ -1,7 +1,7 @@
 package com.konovalov.converter.service;
 
-import com.konovalov.converter.dto.CurrenciesListDto;
-import com.konovalov.converter.entity.Currency;
+import com.konovalov.converter.model.jaxb.CurrenciesListDto;
+import com.konovalov.converter.model.entity.Currency;
 import com.konovalov.converter.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,8 @@
 package com.konovalov.converter.controller;
 
-import com.konovalov.converter.entity.Currency;
-import com.konovalov.converter.entity.User;
-import com.konovalov.converter.model.ConverterModel;
+import com.konovalov.converter.model.entity.Currency;
+import com.konovalov.converter.model.entity.User;
+import com.konovalov.converter.model.dto.ConverterModel;
 import com.konovalov.converter.service.ConversionsService;
 import com.konovalov.converter.service.CurrenciesService;
 import com.konovalov.converter.service.RatesService;

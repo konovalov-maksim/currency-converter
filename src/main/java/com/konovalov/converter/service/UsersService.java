@@ -1,6 +1,6 @@
 package com.konovalov.converter.service;
 
-import com.konovalov.converter.entity.User;
+import com.konovalov.converter.model.entity.User;
 import com.konovalov.converter.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

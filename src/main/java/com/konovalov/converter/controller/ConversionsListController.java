@@ -1,15 +1,14 @@
 package com.konovalov.converter.controller;
 
 
-import com.konovalov.converter.entity.Conversion;
-import com.konovalov.converter.entity.Currency;
-import com.konovalov.converter.entity.User;
-import com.konovalov.converter.model.ConversionsFilterModel;
-import com.konovalov.converter.model.PaginationModel;
+import com.konovalov.converter.model.entity.Conversion;
+import com.konovalov.converter.model.entity.Currency;
+import com.konovalov.converter.model.entity.User;
+import com.konovalov.converter.model.dto.ConversionsFilterModel;
+import com.konovalov.converter.model.dto.PaginationModel;
 import com.konovalov.converter.service.ConversionsService;
 import com.konovalov.converter.service.CurrenciesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

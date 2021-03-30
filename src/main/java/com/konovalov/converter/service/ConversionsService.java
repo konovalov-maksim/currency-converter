@@ -1,9 +1,9 @@
 package com.konovalov.converter.service;
 
-import com.konovalov.converter.entity.Conversion;
-import com.konovalov.converter.entity.Rate;
-import com.konovalov.converter.entity.User;
-import com.konovalov.converter.model.ConversionsFilterModel;
+import com.konovalov.converter.model.entity.Conversion;
+import com.konovalov.converter.model.entity.Rate;
+import com.konovalov.converter.model.entity.User;
+import com.konovalov.converter.model.dto.ConversionsFilterModel;
 import com.konovalov.converter.repository.ConversionRepository;
 import com.konovalov.converter.repository.RateRepository;
 import lombok.RequiredArgsConstructor;

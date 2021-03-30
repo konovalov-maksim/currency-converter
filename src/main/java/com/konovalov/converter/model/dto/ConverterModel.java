@@ -1,6 +1,6 @@
-package com.konovalov.converter.model;
+package com.konovalov.converter.model.dto;
 
-import com.konovalov.converter.entity.Currency;
+import com.konovalov.converter.model.entity.Currency;
 import lombok.Data;
 
 import javax.validation.constraints.*;

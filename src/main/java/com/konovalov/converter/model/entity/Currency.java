@@ -1,4 +1,4 @@
-package com.konovalov.converter.entity;
+package com.konovalov.converter.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

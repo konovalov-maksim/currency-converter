@@ -1,4 +1,4 @@
-package com.konovalov.converter.entity;
+package com.konovalov.converter.model.entity;
 
 import lombok.Data;
 import lombok.ToString;
@@ -6,7 +6,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "rate")

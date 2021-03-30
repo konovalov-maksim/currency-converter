@@ -1,4 +1,4 @@
-package com.konovalov.converter.entity;
+package com.konovalov.converter.model.entity;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

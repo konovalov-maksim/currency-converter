@@ -1,6 +1,6 @@
 package com.konovalov.converter.repository;
 
-import com.konovalov.converter.entity.Rate;
+import com.konovalov.converter.model.entity.Rate;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

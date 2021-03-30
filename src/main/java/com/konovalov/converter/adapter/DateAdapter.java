@@ -1,4 +1,4 @@
-package com.konovalov.converter.dto.adapter;
+package com.konovalov.converter.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package com.konovalov.converter.model;
+package com.konovalov.converter.model.dto;
 
 import lombok.Data;
 

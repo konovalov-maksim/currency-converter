@@ -1,6 +1,6 @@
 package com.konovalov.converter.repository;
 
-import com.konovalov.converter.entity.Conversion;
+import com.konovalov.converter.model.entity.Conversion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

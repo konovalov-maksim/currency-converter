@@ -1,8 +1,8 @@
 package com.konovalov.converter.service;
 
-import com.konovalov.converter.dto.RateDto;
-import com.konovalov.converter.dto.RatesListDto;
-import com.konovalov.converter.entity.Rate;
+import com.konovalov.converter.model.jaxb.RateDto;
+import com.konovalov.converter.model.jaxb.RatesListDto;
+import com.konovalov.converter.model.entity.Rate;
 import com.konovalov.converter.repository.CurrencyRepository;
 import com.konovalov.converter.repository.RateRepository;
 import lombok.RequiredArgsConstructor;
