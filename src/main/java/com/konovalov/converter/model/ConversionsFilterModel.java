@@ -1,10 +1,12 @@
 package com.konovalov.converter.model;
 
+import lombok.Data;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Data
 public class ConversionsFilterModel {
 
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -30,30 +32,14 @@ public class ConversionsFilterModel {
         }
     }
 
-    public String getCurrencyFromId() {
-        return currencyFromId;
-    }
-
     public void setCurrencyFromId(String currencyFromId) {
         if ("0".equals(currencyFromId)) currencyFromId = null;
         this.currencyFromId = currencyFromId;
     }
 
-    public String getCurrencyToId() {
-        return currencyToId;
-    }
-
     public void setCurrencyToId(String currencyToId) {
         if ("0".equals(currencyToId)) currencyToId = null;
         this.currencyToId = currencyToId;
-    }
-
-    public String getDateStr() {
-        return dateStr;
-    }
-
-    public void setDateStr(String dateStr) {
-        this.dateStr = dateStr;
     }
 
 }

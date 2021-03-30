@@ -5,11 +5,12 @@ import com.konovalov.converter.dto.RatesListDto;
 import com.konovalov.converter.entity.Rate;
 import com.konovalov.converter.repository.CurrencyRepository;
 import com.konovalov.converter.repository.RateRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.DateUtils;
@@ -25,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class RatesService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -41,18 +44,6 @@ public class RatesService {
 
     @Value("${data.rubId}")
     private String roubleCurrencyId;
-
-    @Autowired
-    public RatesService(
-            OkHttpClient client,
-            RateRepository rateRepo,
-            CurrencyRepository currencyRepository,
-            ModelMapper mapper) {
-        this.client = client;
-        this.rateRepo = rateRepo;
-        this.mapper = mapper;
-        this.currencyRepository = currencyRepository;
-    }
 
     public boolean areRatesOutdated() {
         Date lastStoredRatesDate = rateRepo.findLastRatesDate();

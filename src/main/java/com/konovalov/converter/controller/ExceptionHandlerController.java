@@ -1,7 +1,6 @@
 package com.konovalov.converter.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,16 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 @Controller
+@Slf4j
 public class ExceptionHandlerController implements ErrorController {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(HttpServletRequest request, Exception e) {
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("errorTitle", "Ошибка");
         modelAndView.addObject("errorMsg", "Во время обработки запроса произошла ошибка: " + e.getMessage());
-        logger.error("");
+        log.error("");
         return modelAndView;
     }
 
@@ -43,7 +41,7 @@ public class ExceptionHandlerController implements ErrorController {
                 default: yield "Во время обработки запроса произошла ошибка";
             };
         }
-        logger.warn(errorTitle);
+        log.warn(errorTitle);
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("errorTitle", errorTitle);
         modelAndView.addObject("errorMsg", errorMsg);

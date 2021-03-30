@@ -1,5 +1,8 @@
 package com.konovalov.converter.entity;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -7,6 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "rate")
+@Data @ToString(of = {"nominal", "value", "date", "currencyId"})
 public class Rate {
 
     @Id
@@ -30,78 +34,4 @@ public class Rate {
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getNominal() {
-        return nominal;
-    }
-
-    public void setNominal(Integer nominal) {
-        this.nominal = nominal;
-    }
-
-    public BigDecimal getValue() {
-        return value;
-    }
-
-    public void setValue(BigDecimal value) {
-        this.value = value;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(String currencyId) {
-        this.currencyId = currencyId;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
-    @Override
-    public String toString() {
-        return "Rate{" +
-                "id=" + id +
-                ", nominal=" + nominal +
-                ", value=" + value +
-                ", date=" + date +
-                ", currency=" + currency +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Rate rate = (Rate) o;
-        return Objects.equals(nominal, rate.nominal) &&
-                Objects.equals(value, rate.value) &&
-                Objects.equals(date, rate.date) &&
-                Objects.equals(currency, rate.currency);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nominal, value, date, currency);
-    }
 }

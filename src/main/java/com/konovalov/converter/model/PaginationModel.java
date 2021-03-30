@@ -1,8 +1,11 @@
 package com.konovalov.converter.model;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class PaginationModel {
 
     private static final int NEXT_PAGES_MAX = 3;
@@ -34,28 +37,8 @@ public class PaginationModel {
         prevPagesSkipped = !prevPagesNums.isEmpty() && prevPagesNums.get(prevPagesNums.size() - 1) > 0;
     }
 
-    public List<Integer> getNextPagesNums() {
-        return nextPagesNums;
-    }
-
-    public List<Integer> getPrevPagesNums() {
-        return prevPagesNums;
-    }
-
-    public boolean isNextPagesSkipped() {
-        return nextPagesSkipped;
-    }
-
-    public boolean isPrevPagesSkipped() {
-        return prevPagesSkipped;
-    }
-
     public int getLastPageNum() {
         return totalPages - 1;
-    }
-
-    public int getCurPageNum() {
-        return curPageNum;
     }
 
 }

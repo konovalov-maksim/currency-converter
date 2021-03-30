@@ -3,11 +3,10 @@ package com.konovalov.converter.service;
 import com.konovalov.converter.dto.CurrenciesListDto;
 import com.konovalov.converter.entity.Currency;
 import com.konovalov.converter.repository.CurrencyRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
@@ -21,9 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class CurrenciesService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final OkHttpClient client;
     private final CurrencyRepository currencyRepo;
@@ -31,16 +30,6 @@ public class CurrenciesService {
 
     @Value("${http.url.currencies}")
     private String currenciesRequestUrl;
-
-    @Autowired
-    public CurrenciesService(
-            OkHttpClient client,
-            CurrencyRepository currencyRepo,
-            ModelMapper mapper) {
-        this.client = client;
-        this.currencyRepo = currencyRepo;
-        this.mapper = mapper;
-    }
 
     public List<Currency> findCurrenciesWithRelevantRate() {
         return currencyRepo.findCurrenciesWithRelevantRates();
@@ -56,10 +45,10 @@ public class CurrenciesService {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            logger.info("Запрос на список валют: получен ответ " + response.code());
+            log.info("Запрос на список валют: получен ответ " + response.code());
             processResponse(response);
         } catch (IOException e) {
-            logger.error("Неудачная попытка получения списка валют", e);
+            log.error("Неудачная попытка получения списка валют", e);
         }
     }
 
@@ -71,14 +60,14 @@ public class CurrenciesService {
                 try {
                     currencyRepo.save(currency);
                 } catch (DataAccessException e) {
-                    logger.error("Ошибка сохранения данных валюты " + currency, e);
+                    log.error("Ошибка сохранения данных валюты " + currency, e);
                 }
             }
-            logger.info("Обновление списка валют завершено");
+            log.info("Обновление списка валют завершено");
         } catch (JAXBException e) {
-            logger.error("Ошибка парсинга списка валют", e);
+            log.error("Ошибка парсинга списка валют", e);
         } catch (Exception e) {
-            logger.error("Ошибка обработки ответа по запросу на получение списка валют", e);
+            log.error("Ошибка обработки ответа по запросу на получение списка валют", e);
         }
     }
 
@@ -86,7 +75,7 @@ public class CurrenciesService {
         JAXBContext jaxbContext = JAXBContext.newInstance(CurrenciesListDto.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         CurrenciesListDto currenciesListDto = (CurrenciesListDto) unmarshaller.unmarshal(responseXml);
-        logger.info("Найдено валют: " + currenciesListDto.getCurrencyDtos().size());
+        log.info("Найдено валют: " + currenciesListDto.getCurrencyDtos().size());
         return currenciesListDto.getCurrencyDtos().stream()
                 .filter(item -> !item.getCharCode().isEmpty()) //Валюты без ISO кода - устаревшие, не сохраняем их
                 .map(item -> mapper.map(item, Currency.class))

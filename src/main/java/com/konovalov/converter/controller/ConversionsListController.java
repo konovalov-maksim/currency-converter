@@ -8,6 +8,7 @@ import com.konovalov.converter.model.ConversionsFilterModel;
 import com.konovalov.converter.model.PaginationModel;
 import com.konovalov.converter.service.ConversionsService;
 import com.konovalov.converter.service.CurrenciesService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ConversionsListController {
 
     @Value("${view.itemsPerPage}")
@@ -31,12 +33,6 @@ public class ConversionsListController {
 
     private final ConversionsService conversionsService;
     private final CurrenciesService currenciesService;
-
-    @Autowired
-    public ConversionsListController(ConversionsService conversionsService, CurrenciesService currenciesService) {
-        this.conversionsService = conversionsService;
-        this.currenciesService = currenciesService;
-    }
 
     @GetMapping("/conversions")
     public String showConversionsList(

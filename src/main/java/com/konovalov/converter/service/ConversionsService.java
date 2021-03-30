@@ -6,9 +6,8 @@ import com.konovalov.converter.entity.User;
 import com.konovalov.converter.model.ConversionsFilterModel;
 import com.konovalov.converter.repository.ConversionRepository;
 import com.konovalov.converter.repository.RateRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,18 +17,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class ConversionsService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final ConversionRepository conversionRepo;
     private final RateRepository rateRepository;
-
-    @Autowired
-    public ConversionsService(ConversionRepository conversionRepo, RateRepository rateRepository) {
-        this.conversionRepo = conversionRepo;
-        this.rateRepository = rateRepository;
-    }
 
     @Transactional
     public BigDecimal convert(BigDecimal inputValue, String currencyFromId, String currencyToId, User user) {
@@ -41,7 +34,7 @@ public class ConversionsService {
             conversionRepo.save(conversion);
             return conversion.calculateOutputValue();
         } catch (Exception e) {
-            logger.error("Ошибка конвертации", e);
+            log.error("Ошибка конвертации", e);
             throw e;
         }
     }

@@ -6,7 +6,7 @@ import com.konovalov.converter.model.ConverterModel;
 import com.konovalov.converter.service.ConversionsService;
 import com.konovalov.converter.service.CurrenciesService;
 import com.konovalov.converter.service.RatesService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class ConverterController {
 
     @Value("${view.defaultCurrencyFromId}")
@@ -32,13 +33,6 @@ public class ConverterController {
     private final CurrenciesService currenciesService;
     private final RatesService ratesService;
     private final ConversionsService conversionsService;
-
-    @Autowired
-    public ConverterController(CurrenciesService currenciesService, RatesService ratesService, ConversionsService conversionsService) {
-        this.currenciesService = currenciesService;
-        this.ratesService = ratesService;
-        this.conversionsService = conversionsService;
-    }
 
     @GetMapping("/converter")
     public String showConverter(@ModelAttribute ConverterModel converterModel) {
